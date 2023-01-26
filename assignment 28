@@ -1,0 +1,350 @@
+1)
+#include<iostream>
+using namespace std;
+class Complex
+{
+    private:
+        int a;
+        int b;
+    public:
+        friend void operator>>(istream &in,Complex &X);
+       friend void operator<<(ostream &os,Complex X);
+
+
+};
+void operator>>(istream &in,Complex &X)                 //Complex ka reference variable banana padega because actual variable ka data change krna hai
+{
+    cout<<"\nEnter real part: ";
+    cin>>X.a;
+    cout<<"\nEnter imaginary part: ";
+    cin>>X.b;
+}
+void operator<<(ostream &os,Complex X)                                      //Complex ka reference variable banane ki need nhi h ,kyuki sirf data print krna h,actual varible mai changes nhi karne
+{
+    cout<<"\nReal : "<<X.a<<"  img : "<<X.b;
+}
+int main()
+{
+    Complex c;
+    cin>>c;
+    cout<<c;
+    return 0;
+}
+
+
+
+2)
+
+#include<iostream>
+using namespace std;
+class Complex
+{
+    private:
+        int a;
+        int b;
+    public:
+        void setData(int a,int b)
+        {
+            this->a=a;
+            this->b=b;
+        }
+    void display()
+    {
+        cout<<"\nReal : "<<a<<"  img : "<<b;
+    }
+
+};
+int main()
+{
+    Complex c;
+    c.setData(3,5);
+    c.display();
+    return 0;
+}
+
+
+3)
+
+#include<iostream>
+using namespace std;
+class Matrix
+{
+    private:
+        int arr[5];
+        const int size=5;
+    public:
+        void setData()
+        {
+            cout<<"Enter 5 values for matrix\n";
+            for(int i=0;i<5;i++)
+            {
+                cin>>arr[i];
+            }
+        }
+        void showData()
+        {
+            cout<<"\nThe array is:\n";
+            for(int i=0;i<5;i++)
+            {
+                cout<<arr[i]<<"  ";
+            }
+        }
+
+        void operator[](int index)
+        {
+           if(index>=size||index<0)
+           {
+               cout<<"Array index out of bounds Exception!";
+               exit(0);
+           }
+           int value;
+           cout<<"\nEnter value to be inserted ";cin>>value;
+           arr[index]=value;
+        }
+};
+int main()
+{
+    Matrix m;
+    int x;
+    m.setData();
+    m.showData();
+    cout<<"\nEnter index no of array to be updated";
+    cin>>x;
+    m[x];                                                //m.operator[](x);
+    m.showData();
+    return 0;
+}
+
+
+6)
+#include<iostream>
+using namespace std;
+class Complex
+{
+    private:
+        int a;
+        int b;
+    public:
+        void setData(int x,int y)
+        {
+            a=x;
+            b=y;
+        }
+        void showData()
+        {
+            cout<<"\nReal : "<<a<<"  img : "<<b;
+        }
+        Complex & operator=(Complex X)
+        {
+
+            this->a=X.a;
+            this->b=X.b;
+            return (*this);
+        }
+};
+int main()
+{
+    Complex c1,c2,c3;
+    c1.setData(3,7);
+    c3=c2=c1;                                          //c2.operator=(c1); c3.operator=(temp);temp woh object hai jo return hua hai
+    cout<<"\nc1 details";
+    c1.showData();
+    cout<<"\nc2 details";
+    c2.showData();
+    cout<<"\nc3 details";
+    c2.showData();
+    return 0;
+}
+
+
+
+7)
+
+#include<iostream>
+using namespace std;
+class Integer
+{
+    private:
+        int num;
+    public:
+        Integer()
+        {
+            num=0;
+        }
+        void setData(int n)
+        {
+            num=n;
+        }
+        void showData()
+        {
+            cout<<num;
+        }
+        void operator!()
+        {
+            num=-num;
+        }
+
+};
+int main()
+{
+    Integer X;
+    X.setData(5);
+    X.showData();
+    !X;                                     //X.operator!();
+    cout<<"\nAfter negation\n";
+    X.showData();
+    return 0;
+}
+
+
+8)
+
+#include<iostream>
+using namespace std;
+class Coordinate
+{
+    private:
+        int x;
+        int y;
+        int z;
+    public:
+        Coordinate(){}                                                              //default constructor
+        Coordinate(int a,int b,int c)                                           //parameterized constructor
+        {
+            x=a;
+            y=b;
+            z=c;
+        }
+        Coordinate operator,(Coordinate X)
+        {
+            Coordinate temp;
+            temp.x=X.x;
+            temp.y=X.y;
+            temp.z=X.z;
+            return temp;
+        }
+        void showData()
+        {
+            cout<<"\nx= "<<x<<" y= "<<y<<" z= "<<z;
+        }
+
+};
+int main()
+{
+    Coordinate c1(2,3,4),c2(3,6,9),c3,c4;
+    cout<<"c1";
+    c1.showData();
+    cout<<"\nc2";
+    c2.showData();
+    c3=(c1,c2);
+    cout<<"\nc3";                               //c3=c1.operator,(c2);
+    c3.showData();
+    c4=(c1,c2,c3);                                  //c4=c1.operator,(c3);
+     cout<<"\nc4";
+    c4.showData();
+    return 0;
+}
+
+
+9)
+
+#include<iostream>
+using namespace std;
+class Integer
+{
+    private:
+        int x;
+    public:
+        Integer (int k)
+        {
+            x=k;
+        }
+        operator int()                                      //type casting operator to convert Integer class object to int
+        {
+            cout<<"operator int() inside Integer class called ";
+            return x;
+        }
+};
+int main()
+{
+    int num;
+    Integer ob(5);     //Integer ob=5;  parameterized constructor will be called
+    num=ob;             //type casting called
+    return 0;
+}
+
+
+10)
+
+#include<iostream>
+using namespace std;
+class Distance
+{
+    private:
+        int feet;
+        int inches;
+    public:
+        Distance ()
+        {
+            feet=0;
+            inches=0;
+        }
+        Distance(int f,int i)
+        {
+            feet=f;
+            inches=i;
+        }
+        void display()
+        {
+            cout<<"\nfeet= "<<feet<<" inches= "<<inches;
+        }
+        void operator()(int a,int b,int c)
+        {
+            feet=a+c+5;
+            inches=a+b+15;
+        }
+
+};
+int main()
+{
+    Distance ob3;
+    cout<<"After default constructor is called";
+    ob3.display();
+    cout<<"\nAfter function call operator is called";
+    ob3(1,2,3);                             //ob3.operator()(1,2,3);
+    ob3.display();
+    return 0;
+}
+
+
+11)
+
+#include<iostream>
+using namespace std;
+class Marks
+{
+    private:
+        int mark;
+    public:
+        Marks(){mark=0;}                                    //non parameterized constructor
+        void display()
+        {
+            cout<<mark;
+        }
+
+       Marks *operator->()
+        {
+            return this;
+        }
+};
+int main()
+{
+    Marks m1;m1.display();
+    m1->display();                       //m1.opeartor->();
+
+
+    return 0;
+}
+
+
+
